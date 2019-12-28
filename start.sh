@@ -39,7 +39,7 @@ fi
 FILENAME=$(cat list.json | jq --raw-output ".\"${LINK}\"")
 if [[ $FILENAME = null ]]; then
   # Download it
-  echo -e "${RED}File does not exists, downloading...${NORMAL}"
+  echo -e "${RED}File does not exist, downloading...${NORMAL}"
   youtube-dl --recode-video mp4 $LINK -o $TMP_OUTPUT_FILE &&
   # Save the reference
   FILENAME=$(date +%s).mp4
