@@ -5,6 +5,14 @@ TMP_OUTPUT_FILE="output.mp4"
 LIST_FILE="list.json"
 BASE_FOLDER_VIDEOS="./videos"
 
+# Help! I need somebody...
+if [[ $1 = '-h' -o $1 = '---help' ]]; then
+  echo -e "Usage:\n\tWith options: ./start.sh YOUTUBE_LINK 05:02:15 06:04:18 dest.mp4"
+  echo -e "\tAll optional: ./start.sh\n"
+  exit 0
+fi
+
+# Init everything we need
 if [[ ! -f $LIST_FILE ]]; then
   echo "{}" > $LIST_FILE
 fi
@@ -20,8 +28,9 @@ else
   LINK=$1
 fi
 
-SRC_FILE=$(cat list.json | jq ".\"${LINK}\"")
-if [[ $SRC_FILE = null ]]; then
+# Download or retrieve file from cache
+FILENAME=$(cat list.json | jq ".\"${LINK}\"")
+if [[ $FILENAME = null ]]; then
   # Download it
   echo "File does not exists, downloading..."
   youtube-dl --recode-video mp4 $LINK -o $TMP_OUTPUT_FILE &&
@@ -37,14 +46,8 @@ if [[ $SRC_FILE = null ]]; then
 else
   echo "File exists: $SRC_FILE"
 fi
-exit 0
 
-
-
-exit 0
-
-echo -e "Usage:\n\tWith options: ./start.sh source.mp4 05:02:15 06:04:18 dest.mp4"
-echo -e "\tAll optional: ./start.sh\n"
+SRC_FILE=$TMP_OUTPUT_FILE $BASE_FOLDER_VIDEOS/$FILENAME
 
 if [[ -z $2 ]]; then
   echo "Time start hh:mm:ss"
