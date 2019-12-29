@@ -86,7 +86,7 @@ if [[ $FILENAME = null ]]; then
   youtube-dl --recode-video mp4 $URL -o $TMP_OUTPUT_FILE &&
   # Save the reference
   FILENAME=$(date +%s).mp4
-  mv $TMP_OUTPUT_FILE $BASE_FOLDER_VIDEOS/$FILENAME
+  mv $TMP_OUTPUT_FILE*.mp4 $BASE_FOLDER_VIDEOS/$FILENAME
   cat list.json | jq ".\"${URL}\" = \"${FILENAME}\"" > $TMP_FILE &&
   mv $TMP_FILE list.json
   # Just to be sure
